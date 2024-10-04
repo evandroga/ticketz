@@ -1,3 +1,31 @@
+# BACKEND_PORT=8080
+# FRONTEND_PORT=3000
+# BACKEND_URL=https://apiticketz.example.com
+# FRONTEND_URL=https://ticketz.example.com
+# TZ=America/Sao_Paulo
+#
+# DB_DIALECT=postgres
+# DB_HOST=postgres
+# DB_PORT=5432
+# DB_USER=ticketz
+# DB_NAME=ticketz
+# DB_TIMEZONE=-03:00
+#
+#
+# REDIS_URI=redis://redis:6379
+# REDIS_OPT_LIMITER_MAX=1
+# REDIS_OPT_LIMITER_DURATION=3000
+#
+# USER_LIMIT=10000
+# CONNECTIONS_LIMIT=100000
+# CLOSED_SEND_BY_ME=true
+#
+# FACEBOOK_APP_ID=
+# FACEBOOK_APP_SECRET=
+#
+# VERIFY_TOKEN=ticketz
+# SOCKET_ADMIN=true
+
 services:
   backend:
     build:
@@ -7,8 +35,6 @@ services:
       - ticketz_backend_public:/usr/src/app/public
       - ticketz_backend_private:/usr/src/app/private
     restart: always
-    ports:
-      - ${BACKEND_PORT:-8080}:3000
     networks:
       - network_public
     deploy:
@@ -23,8 +49,6 @@ services:
           memory: 1024M
 
   frontend:
-    ports:
-      - ${FRONTEND_PORT:-3000}:80
     build:
       context: ./frontend
       dockerfile: ./Dockerfile
@@ -52,7 +76,7 @@ services:
         - traefik.http.routers.chatwoot_nestor_app.tls.certresolver=letsencryptresolver
         - traefik.http.routers.chatwoot_nestor_app.priority=1
         - traefik.http.routers.chatwoot_nestor_app.service=chatwoot_nestor_app
-        - traefik.http.services.chatwoot_nestor_app.loadbalancer.server.port=${FRONTEND_PORT:-3000}
+        - traefik.http.services.chatwoot_nestor_app.loadbalancer.server.port=${FRONTEND_PORT}
         - traefik.http.services.chatwoot_nestor_app.loadbalancer.passhostheader=true
         - traefik.http.middlewares.sslheader.headers.customrequestheaders.X-Forwarded-Proto=https
         - traefik.http.routers.chatwoot_nestor_app.middlewares=sslheader@docker
