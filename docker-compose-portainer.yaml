@@ -28,6 +28,8 @@
 
 services:
   backend:
+    ports:
+      - ${BACKEND_PORT}:3000
     build:
       context: ./backend
       dockerfile: ./Dockerfile
@@ -49,6 +51,8 @@ services:
           memory: 1024M
 
   frontend:
+    ports:
+      - ${FRONTEND_PORT}:80
     build:
       context: ./frontend
       dockerfile: ./Dockerfile
